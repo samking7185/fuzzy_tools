@@ -1,6 +1,6 @@
 import numpy as np
 
-from fuzzy import Membership, MembershipArray, Rulebase, Defuzz
+from fuzzy_tools.fuzzy import Membership, MembershipArray, Rulebase, Defuzz
 
 
 class FIS:
