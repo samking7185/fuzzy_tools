@@ -158,8 +158,11 @@ class Rulebase:
         return self.output
 
     def OR_rule(self, x):
-        self.output = np.amax(x)
-        return self.output
+        if not x:
+            return 0
+        else:
+            self.output = np.amax(x)
+            return self.output
 
 
 class Defuzz:

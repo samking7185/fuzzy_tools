@@ -35,6 +35,7 @@ class FIS:
         The outputs are evaluated as [MF1,1 and MF2,1]  [MF1,1 and MF2,2]  [MF1,1 and MF2,3]  etc.
         """
         self.params = params
+        self.threshold = -40
         in1MF = []
         in2MF = []
         out3MF = []
@@ -60,7 +61,8 @@ class FIS:
 
         input1 = []
         input2 = []
-
+        if in1 < -90:
+            s = 1
         for mf in params["MF1obj"]:
             if len(mf.params) == 2:
                 input1.append(mf.gauss(in1))
@@ -81,9 +83,11 @@ class FIS:
         for r1 in input1:
             for r2 in input2:
                 rule_temp = Fr.AND_rule([r1, r2])
+                if rule_temp:
+                    s = 1
                 rule_combos.append(rule_temp)
 
-        full_out_array = [[], [], [], [], [], [], []]
+        full_out_array = [[], [], [], [], [], [], [], [], [], [], []]
 
         for rule, combo in zip(params["RULES"], rule_combos):
             if rule > len(params["MF3obj"]):
@@ -91,9 +95,9 @@ class FIS:
             else:
                 full_out_array[rule].append(combo)
 
-        out_array = [out for out in full_out_array if out != []]
+        # out_array = [out for out in full_out_array if out != []]
 
-        mu_array = list(map(Fr.OR_rule, out_array))
+        mu_array = list(map(Fr.OR_rule, full_out_array))
 
         output = Defuzz(mu_array, params["MF3obj"], params["BOUNDS"])
         return output.out
