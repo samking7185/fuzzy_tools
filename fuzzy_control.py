@@ -86,7 +86,10 @@ class FIS:
         full_out_array = [[], [], [], [], [], [], []]
 
         for rule, combo in zip(params["RULES"], rule_combos):
-            full_out_array[rule].append(combo)
+            if rule > len(params["MF3obj"]):
+                continue
+            else:
+                full_out_array[rule].append(combo)
 
         out_array = [out for out in full_out_array if out != []]
 
